@@ -100,8 +100,8 @@ windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace
 myStartupHook :: X ()
 myStartupHook = do
     spawnOnce "xset r 66 &" -- set CAPS autorepeat in X11
-    --spawnOnce "xrandr -s 2560x1440 &" -- set resolution
-    spawnOnce "xrandr -s 1920x1080 &" -- set resolution
+    spawnOnce "xrandr -s 2560x1440 &" -- set resolution
+    --spawnOnce "xrandr -s 1920x1080 &" -- set resolution
     spawnOnce "imwheel &"
     spawnOnce "setxkbmap -model system-keyboard -layout us -variant poop &" -- set custom dvorak
     spawnOnce "lxsession &"
@@ -125,44 +125,6 @@ myColorizer = colorRangeFromClassName
                   (0xc7,0x92,0xea) -- active bg
                   (0xc0,0xa7,0x9a) -- inactive fg
                   (0x28,0x2c,0x34) -- active fg
-
--- gridSelect menu layout
-mygridConfig :: p -> GSConfig Window
-mygridConfig colorizer = (buildDefaultGSConfig myColorizer)
-    { gs_cellheight   = 40
-    , gs_cellwidth    = 200
-    , gs_cellpadding  = 6
-    , gs_originFractX = 0.5
-    , gs_originFractY = 0.5
-    , gs_font         = myFont
-    }
-
-spawnSelected' :: [(String, String)] -> X ()
-spawnSelected' lst = gridselect conf lst >>= flip whenJust spawn
-    where conf = def
-                   { gs_cellheight   = 40
-                   , gs_cellwidth    = 200
-                   , gs_cellpadding  = 6
-                   , gs_originFractX = 0.5
-                   , gs_originFractY = 0.5
-                   , gs_font         = myFont
-                   }
-
-myAppGrid = [ --("Audacity", "audacity")
-                 --, ("Deadbeef", "deadbeef")
-                 --, ("Emacs", "emacsclient -c -a emacs")
-                 ("LibreWolf", "librewolf")
-                 , ("qBitTorrent", "qbittorrent")
-                 --, ("Geany", "geany")
-                 --, ("Geary", "geary")
-                 --, ("Gimp", "gimp")
-                 --, ("Kdenlive", "kdenlive")
-                 --, ("LibreOffice Impress", "loimpress")
-                 --, ("LibreOffice Writer", "lowriter")
-                 --, ("OBS", "obs")
-                 , ("PCManFM", "pcmanfm")
-		 , ("Set Torrent WS", "~./.xmonad/torr_ws_set.sh")
-                 ]
 
 myScratchPads :: [NamedScratchpad]
 myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
@@ -409,12 +371,6 @@ myKeys =
         , ("C-M1-k", incWindowSpacing 4)         -- Increase window spacing
         , ("C-M1-h", decScreenSpacing 4)         -- Decrease screen spacing
         , ("C-M1-l", incScreenSpacing 4)         -- Increase screen spacing
-
-    -- KB_GROUP Grid Select (CTR-g followed by a key)
-        , ("C-g g", spawnSelected' myAppGrid)                 -- grid select favorite apps
-        , ("C-g t", goToSelected $ mygridConfig myColorizer)  -- goto selected window
-        , ("C-g b", bringSelected $ mygridConfig myColorizer) -- bring selected window
-	, ("C-g c", spawn "~/.xmonad/torr_ws_set.sh")	      -- SETUP TORRENT WS
 
     -- KB_GROUP Windows navigation
         , ("M-m", windows W.focusMaster)  -- Move focus to the master window

@@ -224,7 +224,7 @@ alias tozsh="sudo chsh $USER -s /bin/zsh && echo 'Now log out.'"
 alias tofish="sudo chsh $USER -s /bin/fish && echo 'Now log out.'"
 
 # bare git repo alias for dotfiles
-alias config="/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
+alias config="/usr/bin/git --git-dir=/usr/local/dotfiles/ --work-tree=$HOME"
 
 # termbin
 alias tb="nc termbin.com 9999"
@@ -253,3 +253,7 @@ fi
 
 ### SETTING THE STARSHIP PROMPT ###
 eval "$(starship init bash)"
+
+### GitHub CLI ###
+alias gh='/usr/bin/gh'
+alias obs='nohup /usr/local/bin/AppImages/Obsidian-0.12.19.AppImage & disown'
